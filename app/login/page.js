@@ -39,7 +39,7 @@ export default function LoginPage() {
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>Welcome Back</h1>
-      <p className={styles.subheading}>Log in to your StudyStack account</p>
+      <p className={styles.subheading}>Log in to your Learning Stack account</p>
 
       {error && <p className={styles.error}>{error}</p>}
 

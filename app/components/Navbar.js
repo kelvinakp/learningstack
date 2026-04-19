@@ -11,7 +11,7 @@ export default function Navbar() {
     <nav className={styles.navbar}>
       <div className={styles.container}>
         <Link href="/" className={styles.logo}>
-          <span className={styles.logoIcon}>📚</span> StudyStack
+          <span className={styles.logoIcon}>📚</span> Learning Stack
         </Link>
         <div className={styles.links}>
           <Link href="/" className={styles.link}>

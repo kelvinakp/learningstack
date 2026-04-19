@@ -108,7 +108,7 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <div className={styles.hero}>
-        <h1 className={styles.heading}>StudyStack</h1>
+        <h1 className={styles.heading}>Learning Stack</h1>
         <p className={styles.subheading}>
           Share, discover, and upvote the best learning resources
         </p>

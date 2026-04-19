@@ -3,8 +3,8 @@ import Navbar from './components/Navbar';
 import Providers from './providers';
 
 export const metadata = {
-  title: 'StudyStack',
-  description: 'Share, categorize, and rank learning resources',
+  title: 'Learning Stack',
+  description: 'Learning Stack — share, categorize, and rank learning resources',
 };
 
 export default function RootLayout({ children }) {

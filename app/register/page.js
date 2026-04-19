@@ -53,7 +53,7 @@ export default function RegisterPage() {
   return (
     <div className={styles.container}>
       <h1 className={styles.heading}>Create Account</h1>
-      <p className={styles.subheading}>Join StudyStack and start sharing resources</p>
+      <p className={styles.subheading}>Join Learning Stack and start sharing resources</p>
 
       {error && <p className={styles.error}>{error}</p>}
 
