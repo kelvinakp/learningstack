@@ -26,7 +26,7 @@ export default function Home() {
       fetchResources();
     }, 300);
     return () => clearTimeout(debounceRef.current);
-  }, [activeCategory, searchQuery]);
+  }, [activeCategory, searchQuery, session?.user?.id]);
 
   const fetchCategories = async () => {
     try {
@@ -59,11 +59,36 @@ export default function Home() {
   };
 
   const handleUpvote = async (id) => {
+    if (!session?.user?.id) {
+      setError('Log in to upvote.');
+      return;
+    }
     try {
-      await fetch(`/api/resources/${id}/upvote`, { method: 'PUT' });
+      const res = await fetch(`/api/resources/${id}/upvote`, { method: 'PUT' });
+      if (res.status === 401) {
+        setError('You must be logged in to upvote.');
+        return;
+      }
+      if (res.status === 409) {
+        setError('You already upvoted this resource.');
+        setResources((prev) =>
+          prev.map((r) =>
+            Number(r.id) === Number(id) ? { ...r, user_has_upvoted: 1 } : r
+          )
+        );
+        return;
+      }
+      if (!res.ok) {
+        setError('Failed to upvote');
+        return;
+      }
       setResources((prev) =>
         prev
-          .map((r) => (r.id === id ? { ...r, upvotes: r.upvotes + 1 } : r))
+          .map((r) =>
+            Number(r.id) === Number(id)
+              ? { ...r, upvotes: r.upvotes + 1, user_has_upvoted: 1 }
+              : r
+          )
           .sort((a, b) => b.upvotes - a.upvotes)
       );
     } catch {

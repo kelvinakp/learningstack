@@ -13,6 +13,12 @@ const TYPE_COLORS = {
 export default function ResourceCard({ resource, sessionUserId, onUpvote, onDelete }) {
   const badgeColor = TYPE_COLORS[resource.type] || '#95a5a6';
   const isOwner = sessionUserId && String(resource.user_id) === String(sessionUserId);
+  const loggedIn = Boolean(sessionUserId);
+  const alreadyUpvoted =
+    resource.user_has_upvoted === true ||
+    resource.user_has_upvoted === 1 ||
+    resource.user_has_upvoted === '1';
+  const upvoteDisabled = !loggedIn || alreadyUpvoted;
 
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete "${resource.title}"?`)) {
@@ -41,8 +47,20 @@ export default function ResourceCard({ resource, sessionUserId, onUpvote, onDele
       </a>
 
       <div className={styles.cardFooter}>
-        <button className={styles.upvoteButton} onClick={() => onUpvote(resource.id)}>
-          ▲ {resource.upvotes}
+        <button
+          type="button"
+          className={`${styles.upvoteButton} ${upvoteDisabled ? styles.upvoteDisabled : ''}`}
+          disabled={upvoteDisabled}
+          title={
+            !loggedIn
+              ? 'Log in to upvote'
+              : alreadyUpvoted
+                ? 'You already upvoted this'
+                : 'Upvote'
+          }
+          onClick={() => onUpvote(resource.id)}
+        >
+          {alreadyUpvoted ? 'Upvoted' : '▲'} {resource.upvotes}
         </button>
         {isOwner && (
           <button className={styles.deleteButton} onClick={handleDelete}>

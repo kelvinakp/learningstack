@@ -86,10 +86,16 @@
   transition: all 0.2s;
 }
 
-.upvoteButton:hover {
+.upvoteButton:hover:not(:disabled) {
   border-color: var(--color-primary);
   color: var(--color-primary);
   background: rgba(108, 92, 231, 0.06);
+}
+
+.upvoteDisabled,
+.upvoteButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .deleteButton {

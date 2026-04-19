@@ -5,17 +5,22 @@ import pool from '@/lib/db';
 
 export async function GET(request) {
   try {
+    const session = await getServerSession(authOptions);
+    const sessionUserId = session?.user?.id ? Number(session.user.id) : null;
+
     const { searchParams } = new URL(request.url);
     const categoryId = searchParams.get('category');
     const search = searchParams.get('search')?.trim();
 
     let query = `
-      SELECT r.*, c.name AS category_name
+      SELECT r.*, c.name AS category_name,
+        (ru.user_id IS NOT NULL) AS user_has_upvoted
       FROM resources r
       JOIN categories c ON r.category_id = c.id
+      LEFT JOIN resource_upvotes ru ON ru.resource_id = r.id AND ru.user_id = ?
       WHERE 1=1
     `;
-    const params = [];
+    const params = [sessionUserId];
 
     if (categoryId) {
       query += ' AND r.category_id = ?';
@@ -31,7 +36,11 @@ export async function GET(request) {
     query += ' ORDER BY r.upvotes DESC, r.created_at DESC';
 
     const [rows] = await pool.query(query, params);
-    return NextResponse.json(rows);
+    const normalized = rows.map((row) => ({
+      ...row,
+      user_has_upvoted: row.user_has_upvoted ? 1 : 0,
+    }));
+    return NextResponse.json(normalized);
   } catch (error) {
     console.error('GET /api/resources error:', error);
     return NextResponse.json(
