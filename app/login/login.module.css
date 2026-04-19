@@ -1,0 +1,115 @@
+.container {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.heading {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text);
+  margin: 0;
+  text-align: center;
+}
+
+.subheading {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.error {
+  background: #ffeaea;
+  color: #c0392b;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-text);
+}
+
+.field input {
+  padding: 0.7rem 1rem;
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color 0.2s;
+  outline: none;
+  font-family: inherit;
+}
+
+.field input:focus {
+  border-color: var(--color-primary);
+}
+
+.field input::placeholder {
+  color: var(--color-text-secondary);
+  opacity: 0.6;
+}
+
+.submitButton {
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  margin-top: 0.5rem;
+  font-family: inherit;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.switchText {
+  text-align: center;
+  margin-top: 1.5rem;
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+}
+
+.switchLink {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.switchLink:hover {
+  text-decoration: underline;
+}
