@@ -10,7 +10,14 @@ const TYPE_COLORS = {
   Book: '#9b59b6',
 };
 
-export default function ResourceCard({ resource, sessionUserId, onUpvote, onDelete }) {
+export default function ResourceCard({
+  resource,
+  sessionUserId,
+  onUpvote,
+  onDelete,
+  onEdit,
+  showDate = false,
+}) {
   const badgeColor = TYPE_COLORS[resource.type] || '#95a5a6';
   const isOwner = sessionUserId && String(resource.user_id) === String(sessionUserId);
   const loggedIn = Boolean(sessionUserId);
@@ -36,6 +43,12 @@ export default function ResourceCard({ resource, sessionUserId, onUpvote, onDele
       </div>
 
       <h3 className={styles.title}>{resource.title}</h3>
+
+      {showDate && resource.created_at && (
+        <p className={styles.date}>
+          Uploaded {new Date(resource.created_at).toLocaleString()}
+        </p>
+      )}
 
       <a
         href={resource.url}
@@ -63,9 +76,20 @@ export default function ResourceCard({ resource, sessionUserId, onUpvote, onDele
           {alreadyUpvoted ? 'Upvoted' : '▲'} {resource.upvotes}
         </button>
         {isOwner && (
-          <button className={styles.deleteButton} onClick={handleDelete}>
-            ✕ Delete
-          </button>
+          <div className={styles.ownerActions}>
+            {onEdit && (
+              <button
+                type="button"
+                className={styles.editButton}
+                onClick={() => onEdit(resource.id)}
+              >
+                Edit
+              </button>
+            )}
+            <button type="button" className={styles.deleteButton} onClick={handleDelete}>
+              ✕ Delete
+            </button>
+          </div>
         )}
       </div>
     </div>

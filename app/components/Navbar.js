@@ -19,6 +19,9 @@ export default function Navbar() {
           </Link>
           {session ? (
             <>
+              <Link href="/history" className={styles.link}>
+                My uploads
+              </Link>
               <Link href="/add" className={styles.addButton}>
                 + Add Resource
               </Link>
