@@ -102,7 +102,10 @@ export async function DELETE(request, { params }) {
 
     const { id } = await params;
 
-    const [rows] = await pool.query('SELECT user_id FROM resources WHERE id = ?', [id]);
+    const [rows] = await pool.query(
+      'SELECT user_id, category_id FROM resources WHERE id = ?',
+      [id]
+    );
     if (rows.length === 0) {
       return NextResponse.json({ error: 'Resource not found' }, { status: 404 });
     }
@@ -111,7 +114,29 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: 'You can only delete your own resources' }, { status: 403 });
     }
 
-    await pool.query('DELETE FROM resources WHERE id = ?', [id]);
+    const categoryId = rows[0].category_id;
+
+    const conn = await pool.getConnection();
+    try {
+      await conn.beginTransaction();
+
+      await conn.query('DELETE FROM resources WHERE id = ?', [id]);
+
+      const [remaining] = await conn.query(
+        'SELECT COUNT(*) AS cnt FROM resources WHERE category_id = ?',
+        [categoryId]
+      );
+      if (remaining[0].cnt === 0) {
+        await conn.query('DELETE FROM categories WHERE id = ?', [categoryId]);
+      }
+
+      await conn.commit();
+    } catch (err) {
+      await conn.rollback();
+      throw err;
+    } finally {
+      conn.release();
+    }
 
     return NextResponse.json({ message: 'Resource deleted' });
   } catch (error) {

@@ -113,6 +113,7 @@ export default function Home() {
         setError('Failed to delete resource');
         return;
       }
+      fetchCategories();
       if (resources.length === 1 && page > 1) {
         setPage((p) => p - 1);
       } else {
